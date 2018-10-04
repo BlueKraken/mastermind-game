@@ -1,13 +1,8 @@
-GREEN = 'GREEN'
-BLUE = 'BLUE'
-YELLOW = 'YELLOW'
-RED = 'RED'
-
-INITIAL_GUESSES = 5
+import constants as CONST
 
 class Game:
 
-  guesses = INITIAL_GUESSES
+  guesses = CONST.INITIAL_GUESSES
   currentGuess = []
 
   def __init__(self):
@@ -25,7 +20,6 @@ class Game:
     return
 
   def gameStart(self):
-
     self.secretCode = self.generateSecretCode()
 
     while self.guesses > 0 :
@@ -37,9 +31,4 @@ class Game:
   def recieveGuessFromUser(self):
     print('Enter code')
     self.guesses -= 1
-    return []
-
-def gamePyTest():
-  Game()
-
-gamePyTest()
+    return input()
