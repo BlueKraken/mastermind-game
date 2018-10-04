@@ -12,14 +12,15 @@ class Game:
 
   def generateSecretCode(self, length = 4):
     self.secretCode = []
-    for _ in range(4):
-      self.secret.append(randrange(len(COLORS)))
+    # for _ in range(4):
+    #   self.secret.append(randrange(len(COLORS)))
+    self.secret = randrange(5)
 
   def giveFeedback(self):
     if self.guesses == 0:
       self.endGame()
 
-    if self.currentGuess == 'end game':
+    if self.currentGuess == 'end':
       self.endGame()
 
   def endGame(self):
