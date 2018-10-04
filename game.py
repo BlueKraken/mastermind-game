@@ -20,7 +20,7 @@ class Game:
     if self.guesses == 0:
       self.endGame()
 
-    if self.currentGuess == 'end':
+    if self.currentGuess == 'end game' or self.currentGuess == 'end' or self.currentGuess == '-1':
       self.endGame()
 
   def endGame(self):
