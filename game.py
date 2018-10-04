@@ -1,34 +1,41 @@
-import constants as CONST
+from random import randrange
+from constants import INITIAL_GUESSES, COLORS
 
 class Game:
 
-  guesses = CONST.INITIAL_GUESSES
+  guesses = INITIAL_GUESSES
   currentGuess = []
+  secret = []
 
   def __init__(self):
-    self.guess = []
     self.gameStart()
 
   def generateSecretCode(self, length = 4):
-    return []
+    self.secretCode = []
+    for _ in range(4):
+      self.secret.append(randrange(len(COLORS)))
 
-  def giveFeedback(self, colors):
+  def giveFeedback(self):
     if self.guesses == 0:
       self.endGame()
 
+    if self.currentGuess == 'end game':
+      self.endGame()
+
   def endGame(self):
-    return
+    self.guesses = 0
+    print('SECRET CODE WAS ' + str(self.secretCode))
+    print('GAME OVER')
 
   def gameStart(self):
     self.secretCode = self.generateSecretCode()
+    print(self.secretCode)
 
     while self.guesses > 0 :
-      self.guess = self.recieveGuessFromUser()
-      self.giveFeedback(self)
-
-    print('GAME OVER')
+      self.recieveGuessFromUser()
+      self.giveFeedback()    
 
   def recieveGuessFromUser(self):
-    print('Enter code')
+    print('Enter code:')
     self.guesses -= 1
-    return input()
+    self.currentGuess = input()
