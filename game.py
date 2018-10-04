@@ -1,5 +1,5 @@
 from random import randrange
-from constants import INITIAL_GUESSES, COLORS, CODE_LENGTH
+from constants import INITIAL_GUESSES, COLORS, CODE_LENGTH, DEBUG_MODE
 
 class Game:
 
@@ -12,8 +12,7 @@ class Game:
 
   def generateSecretCode(self, length = CODE_LENGTH):
     self.secretCode = []
-    for _ in range(4):
-      print(_)
+    for _ in range(CODE_LENGTH):
       self.secretCode.append(randrange(len(COLORS)))
 
   def checkCurrentGuess(self):
@@ -37,7 +36,7 @@ class Game:
           concurrencies += 1
 
     if hits == CODE_LENGTH:
-      print('CONTRATULATIONS!')[0, 0, 3, 1]
+      print('CONTRATULATIONS!')
       self.endGame()
 
     else:
@@ -48,7 +47,6 @@ class Game:
 
     self.currentGuess = []
 
-  # FIXME: todo must be terminating (to lazily )
   def endGame(self):
     self.guesses = 0
     print('SECRET CODE WAS ' + str(self.secretCode))
@@ -56,18 +54,19 @@ class Game:
 
   def gameStart(self):
     self.generateSecretCode(5)
-    print(self.secretCode)
+
+    if DEBUG_MODE:
+      print(self.secretCode)
 
     while self.guesses > 0 :
       self.recieveGuessFromUser()
       self.checkCurrentGuess()    
 
   def recieveGuessFromUser(self):
-    print('Enter code:')
+    print('Enter %d digit code: ' % (CODE_LENGTH))
     self.guesses -= 1
 
+    #TODO: must be able to provide the full sequence in one line
     for _ in range(CODE_LENGTH):
-      color = int(input())
-
-      self.currentGuess.append(color)
+      self.currentGuess.append(int(input()))
 
