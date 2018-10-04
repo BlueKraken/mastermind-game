@@ -1,27 +1,39 @@
 from random import randrange
-from constants import INITIAL_GUESSES, COLORS
+from constants import INITIAL_GUESSES, COLORS, CODE_LENGTH
 
 class Game:
 
   guesses = INITIAL_GUESSES
   currentGuess = []
-  secret = []
+  secretCode = []
 
   def __init__(self):
     self.gameStart()
 
-  def generateSecretCode(self, length = 4):
+  def generateSecretCode(self, length = CODE_LENGTH):
     self.secretCode = []
-    # for _ in range(4):
-    #   self.secret.append(randrange(len(COLORS)))
-    self.secret = randrange(5)
+    for _ in range(4):
+      print(_)
+      self.secretCode.append(randrange(len(COLORS)))
 
-  def giveFeedback(self):
+  def checkCurrentGuess(self):
     if self.guesses == 0:
       self.endGame()
+    
+    hits = 0
+    for index in range(CODE_LENGTH):
+      if self.currentGuess[index] == self.secretCode[index]:
+        hits += 1
 
-    if self.currentGuess == 'end game' or self.currentGuess == 'end' or self.currentGuess == '-1':
+    print('-----------------')
+    print('number of hits:' + str(hits))
+    print('-----------------')
+
+    if hits == 4:
+      print('CONTRATULATIONS!')
       self.endGame()
+
+    self.currentGuess = []
 
   def endGame(self):
     self.guesses = 0
@@ -29,14 +41,23 @@ class Game:
     print('GAME OVER')
 
   def gameStart(self):
-    self.secretCode = self.generateSecretCode()
+    self.generateSecretCode(5)
     print(self.secretCode)
 
     while self.guesses > 0 :
       self.recieveGuessFromUser()
-      self.giveFeedback()    
+      self.checkCurrentGuess()    
 
   def recieveGuessFromUser(self):
     print('Enter code:')
     self.guesses -= 1
-    self.currentGuess = input()
+
+    for _ in range(CODE_LENGTH):
+      color = int(input())
+
+      if color == -1:
+        self.endGame()
+        return
+
+      self.currentGuess.append(color)
+
