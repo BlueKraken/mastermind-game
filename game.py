@@ -21,20 +21,34 @@ class Game:
       self.endGame()
     
     hits = 0
+    concurrencies = 0
+
     for index in range(CODE_LENGTH):
       if self.currentGuess[index] == self.secretCode[index]:
         hits += 1
+      else:
+        # FIXME: be more declarative
+        exists = False
+        for secretColor in self.secretCode:
+          if self.currentGuess[index] == secretColor:
+            exists = True
+        
+        if exists:
+          concurrencies += 1
 
-    print('-----------------')
-    print('number of hits:' + str(hits))
-    print('-----------------')
-
-    if hits == 4:
-      print('CONTRATULATIONS!')
+    if hits == CODE_LENGTH:
+      print('CONTRATULATIONS!')[0, 0, 3, 1]
       self.endGame()
+
+    else:
+      print('-----------------')
+      print('number of hits: ' + str(hits))
+      print('number of concurrencies: ' + str(concurrencies))
+      print('-----------------')
 
     self.currentGuess = []
 
+  # FIXME: todo must be terminating (to lazily )
   def endGame(self):
     self.guesses = 0
     print('SECRET CODE WAS ' + str(self.secretCode))
@@ -54,10 +68,6 @@ class Game:
 
     for _ in range(CODE_LENGTH):
       color = int(input())
-
-      if color == -1:
-        self.endGame()
-        return
 
       self.currentGuess.append(color)
 
