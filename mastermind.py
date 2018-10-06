@@ -2,7 +2,7 @@ from game import Game
 from constants import DEBUG_MODE, PROD_MODE
 
 print('***********************************')
-print('WELCOME TO THE MASTERMIND GAME v0.1')
+print('WELCOME TO THE MASTERMIND GAME v0.2')
 print('***********************************')
 
 print('repo: https://github.com/BlueKraken/mastermind-game\n')
@@ -14,9 +14,9 @@ print('Instructions:')
 print('-------------')
 print(
   'Mastermind is a code-breaking game. The secret code\n'
-  'is a number with only digits from 0 to 5, like:\n' +
+  'is a number with only digits from 0 to 3, like:\n' +
   #TODO: make configurable dificulty
-  '\n2243\n' + 
+  '\n2203\n' + 
   '\n' +
   'The length of the code is configurable,\n' +
   'but note that normally this type of game \n' +
