@@ -9,4 +9,5 @@ COLORS = [GREEN, BLUE, YELLOW, RED]
 
 CODE_LENGTH = 4
 
-DEBUG_MODE = True
+DEBUG_MODE = 'debug'
+PROD_MODE = 'prod'
