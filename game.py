@@ -1,4 +1,5 @@
 from random import randrange
+from functools import reduce
 from constants import INITIAL_GUESSES, COLORS, CODE_LENGTH, DEBUG_MODE, PROD_MODE
 
 class Game:
@@ -29,34 +30,41 @@ class Game:
 
     print(message)
 
+  # hacer utilizando TDD? está peluoo :C
+  # o pensamiento más lógico, menos apegado a la implementación.
+  # Estoy cegado por los ciclos
   def checkCurrentGuess(self):
     if self.guesses == 0:
       self.endGame()
     
-    hits = 0
-    concurrencies = 0
+    hits = list(map(lambda x: False, range(self.codeLenght)))
+    concurrencies = hits.copy()
 
     for index in range(self.codeLenght):
       if self.currentGuess[index] == self.secretCode[index]:
-        hits += 1
+        hits[index] = True
+
       else:
         # FIXME: be more declarative
-        exists = False
+        existsInCode = False
         for secretColor in self.secretCode:
           if self.currentGuess[index] == secretColor:
-            exists = True
+            existsInCode = True
         
-        if exists:
-          concurrencies += 1
+        if existsInCode and hits[index] == False and concurrencies[index] == False:
+          concurrencies[index] = True
 
-    if hits == self.codeLenght:
+    hitsQuantity = countTrue(hits)
+    concurrenciesQuantity = countTrue(concurrencies)
+
+    if hitsQuantity == self.codeLenght:
       print('CONTRATULATIONS YOU WON!')
       self.endGame()
 
     else:
       print('-----------------')
-      print('number of hits: ' + str(hits))
-      print('number of concurrencies: ' + str(concurrencies))
+      print('number of hits: ' + str(hitsQuantity))
+      print('number of concurrencies: ' + str(concurrenciesQuantity))
       print('-----------------')
 
     self.currentGuess = []
@@ -71,12 +79,21 @@ class Game:
 
     while self.guesses > 0 :
       self.recieveGuessFromUser()
-      self.checkCurrentGuess()    
+      self.checkCurrentGuess()
+
+    self.endGame()
 
   def recieveGuessFromUser(self):
     print('Enter a %d digit code: ' % (self.codeLenght))
     self.guesses -= 1
 
-    #TODO: must be able to provide the full sequence in one line
-    for _ in range(self.codeLenght):
-      self.currentGuess.append(int(input()))
+    #TODO: catch non valid input error and ask again
+    self.currentGuess = self.parseGuessInput(input())
+
+  def parseGuessInput(self, userInput):
+    userInput = userInput.strip()
+
+    return list(map(lambda x: int(x), userInput))
+
+def countTrue(collection):
+  return reduce(lambda acc, curr: acc + 1 if curr else acc, collection, 0)
