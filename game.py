@@ -14,9 +14,6 @@ class Game:
     self.codeLenght = codeLength
     self.mode = mode
 
-    self.generateSecretCode()
-    self.gameStart()
-
   def generateSecretCode(self):
     print('Generating secret code')
     self.secretCode = []
@@ -37,37 +34,44 @@ class Game:
     if self.guesses == 0:
       self.endGame()
     
-    hits = list(map(lambda x: False, range(self.codeLenght)))
-    concurrencies = hits.copy()
+    hits = []
 
-    for index in range(self.codeLenght):
-      if self.currentGuess[index] == self.secretCode[index]:
-        hits[index] = True
+    for index in range(len(self.secretCode)):
+      if self.secretCode[index] == self.currentGuess[index]:
+        hits.append(self.currentGuess[index])
 
-      else:
-        # FIXME: be more declarative
-        existsInCode = False
-        for secretColor in self.secretCode:
-          if self.currentGuess[index] == secretColor:
-            existsInCode = True
-        
-        if existsInCode and hits[index] == False and concurrencies[index] == False:
-          concurrencies[index] = True
+    print(hits)
 
-    hitsQuantity = countTrue(hits)
-    concurrenciesQuantity = countTrue(concurrencies)
+    concurrencies = 0
 
-    if hitsQuantity == self.codeLenght:
+    for digit in COLORS:
+      digitInHit = hits.count(digit)
+      
+      aviableInSecret = self.secretCode.count(digit) - digitInHit
+      digitInGuess = self.currentGuess.count(digit) - digitInHit
+
+      if digitInGuess > 0 and aviableInSecret > 0:
+        if digitInGuess == aviableInSecret:
+          concurrencies += digitInGuess
+          
+        elif aviableInSecret > digitInGuess:
+          concurrencies += digitInGuess
+        else:
+          concurrencies += aviableInSecret
+
+    self.currentGuess = []
+    return {'hits': len(hits), 'concurrencies': concurrencies}
+
+  def showFeedback(self, hits, concurrencies):
+    if hits == self.codeLenght:
       print('CONTRATULATIONS YOU WON!')
       self.endGame()
 
     else:
       print('-----------------')
-      print('number of hits: ' + str(hitsQuantity))
-      print('number of concurrencies: ' + str(concurrenciesQuantity))
+      print('number of hits: ' + str(hits))
+      print('number of concurrencies: ' + str(concurrencies))
       print('-----------------')
-
-    self.currentGuess = []
 
   def endGame(self):
     self.guesses = 0
@@ -75,11 +79,15 @@ class Game:
     print('GAME OVER')
 
   def gameStart(self):
+    self.generateSecretCode()
+
     print('GO!')
 
     while self.guesses > 0 :
       self.recieveGuessFromUser()
-      self.checkCurrentGuess()
+      feedback = self.checkCurrentGuess()
+      print(feedback)
+      self.showFeedback(feedback['hits'], feedback['concurrencies'])
 
     self.endGame()
 
