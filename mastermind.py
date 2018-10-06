@@ -57,4 +57,5 @@ print('code length: ' + str(codeLength) + '\n')
 print('press enter to start')
 input()
 
-Game(codeLength, mode)
+game = Game(codeLength, mode)
+game.gameStart()
