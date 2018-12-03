@@ -4,15 +4,16 @@ from constants import INITIAL_GUESSES, COLORS, CODE_LENGTH, DEBUG_MODE, PROD_MOD
 
 class Game:
 
-  guesses = INITIAL_GUESSES
+  guesses = 0
   currentGuess = []
   secretCode = []
   codeLenght = 0
   mode = ''
 
-  def __init__(self, codeLength = CODE_LENGTH, mode = PROD_MODE):
+  def __init__(self, codeLength = CODE_LENGTH, mode = PROD_MODE, initialGuesses = INITIAL_GUESSES):
     self.codeLenght = codeLength
     self.mode = mode
+    self.guesses = initialGuesses
 
   def generateSecretCode(self):
     print('Generating secret code')
@@ -39,8 +40,6 @@ class Game:
     for index in range(len(self.secretCode)):
       if self.secretCode[index] == self.currentGuess[index]:
         hits.append(self.currentGuess[index])
-
-    print(hits)
 
     concurrencies = 0
 
@@ -78,7 +77,7 @@ class Game:
     print('SECRET CODE WAS ' + str(self.secretCode))
     print('GAME OVER')
 
-  def gameStart(self):
+  def start(self):
     self.generateSecretCode()
 
     print('GO!')
@@ -86,7 +85,6 @@ class Game:
     while self.guesses > 0 :
       self.recieveGuessFromUser()
       feedback = self.checkCurrentGuess()
-      print(feedback)
       self.showFeedback(feedback['hits'], feedback['concurrencies'])
 
     self.endGame()

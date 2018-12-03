@@ -1,9 +1,7 @@
 # Mastermind game on phyton
 
-The mastermind board game, also known as Bulls and cows, developed in phyton. For fun.
+The mastermind board game, also known as Bulls and cows, developed in phyton for fun and study purposes.
 
-**To avoid the terminal showing the secret code, change the variable `DEBUG_MODE` of `constants.py` to True**
-
-This is not ready, use with no expectations. 
+This is not ready, use with no expectations.
 
 Commits messages are a mess #notsorry
